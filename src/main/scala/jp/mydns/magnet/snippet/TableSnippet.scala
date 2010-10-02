@@ -19,6 +19,22 @@ import jp.mydns.magnet.model.Table
  */
 class TableSnippet{
 
+  def eastList(xhtml: NodeSeq): NodeSeq = {
+    Table.eastList flatMap { t => bind( "tile", xhtml, "name" -> t) }
+  }
+
+  def southList(xhtml: NodeSeq): NodeSeq = {
+    Table.southList flatMap { t => bind( "tile", xhtml, "name" -> t) }
+  }
+
+  def westList(xhtml: NodeSeq): NodeSeq = {
+    Table.westList flatMap { t => bind( "tile", xhtml, "name" -> t) }
+  }
+
+  def northList(xhtml: NodeSeq): NodeSeq = {
+    Table.northList flatMap { t => bind( "tile", xhtml, "name" -> t) }
+  }
+
   /**
    * 麻雀牌の一覧を表示します。
    */
