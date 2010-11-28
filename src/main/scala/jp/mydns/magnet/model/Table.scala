@@ -34,10 +34,36 @@ println("yama="+yamaList.toString)
     haipai
   }
 
-  def eastList:  List[String] = haipaiList()
-  def southList: List[String] = haipaiList()
-  def westList:  List[String] = haipaiList()
-  def northList: List[String] = haipaiList()
+  def tsumoPai : List[String] = {
+    val (tsumo, yama) = yamaList splitAt 1
+    yamaList = yama
+    tsumo
+  }
+
+
+  // 配牌時に、Houseクラスのtehaiをセット
+  var eastHouse:  House = new House { setTehai( haipaiList ) }
+  var southHouse: House = new House { setTehai( haipaiList ) }
+  var westHouse:  House = new House { setTehai( haipaiList ) }
+  var northHouse: House = new House { setTehai( haipaiList ) }
+
+  // 各家の手牌は、House.getTehaiで取得する
+  def eastList:  List[String] = eastHouse.getTehai
+  def southList: List[String] = southHouse.getTehai
+  def westList:  List[String] = westHouse.getTehai
+  def northList: List[String] = northHouse.getTehai
+
+  // ツモったら、手牌に追加して、ツモ牌をリターン
+  def eastTsumo: List[String] = {
+    val tsumo = tsumoPai
+    eastHouse.addTsumo(tsumo)    
+    tsumo
+  }
+
+  // 牌を切ったら、リリースして、新しい手牌を表示
+  def releaseEast(s: String): List[String] = {
+    eastHouse.releasePai(s)
+  } 
 
 }
 
