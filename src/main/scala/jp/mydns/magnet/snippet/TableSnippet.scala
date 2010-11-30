@@ -19,21 +19,38 @@ import jp.mydns.magnet.model.Table
  */
 class TableSnippet{
 
-  def eastList(xhtml: NodeSeq): NodeSeq = <span id="eastTehai">{
-    Table.eastList flatMap { t => 
-      bind( "tile", xhtml,
-// NG        "name" -> ajaxButton( Text(t), (t) => SetHtml("table-div",releaseEast(t)) )
-//        "name" -> a( Text(t), SetHtml("table-div",getEast) )
-//        "name" -> a( Text(t), SetHtml("table-div",releaseEast(t)) )
-        "name" -> <button onclick={SHtml.ajaxCall(Str(t), releaseEast _)._2}>{t}</button>
-// OK        "name" -> <span onclick={SHtml.ajaxCall(Str(t), releaseEast _)._2}>{t}</span>
-      )
+  def eastList(xhtml: NodeSeq): NodeSeq = <ul id="eastTehai">{
+    if(Table.tsumoban%4 == 0) {
+      Table.eastList flatMap { t => 
+        bind( "tile", xhtml,
+  // NG        "name" -> ajaxButton( Text(t), (t) => SetHtml("table-div",releaseEast(t)) )
+  //        "name" -> a( Text(t), SetHtml("table-div",getEast) )
+  //        "name" -> a( Text(t), SetHtml("table-div",releaseEast(t)) )
+  //        "name" -> {if(Table.tsumoban%4 == 0)}<li><button onclick={SHtml.ajaxCall(Str(t), releaseEast _)._2}>{t}</button></li>{else}<li>{t}</li>
+          "name" -> <li><button onclick={SHtml.ajaxCall(Str(t), releaseEast _)._2}>{t}</button></li>
+  // OK        "name" -> <span onclick={SHtml.ajaxCall(Str(t), releaseEast _)._2}>{t}</span>
+        )
+      }
+    } else {
+      Table.eastList flatMap { t => 
+        bind( "tile", xhtml, "name" -> <li>{t}</li>)
+      }
     }
-  }</span>
+  }</ul>
 
-  def southList(xhtml: NodeSeq): NodeSeq = {
-    Table.southList flatMap { t => bind( "tile", xhtml, "name" -> t) }
-  }
+  def southList(xhtml: NodeSeq): NodeSeq = <ul id="southTehai">{
+    if(Table.tsumoban%4 == 1) {
+      Table.southList flatMap { t => 
+        bind( "tile", xhtml,
+          "name" -> <li><button onclick={SHtml.ajaxCall(Str(t), releaseSouth _)._2}>{t}</button></li>
+        )
+      }
+    } else {
+      Table.southList flatMap { t => 
+        bind( "tile", xhtml, "name" -> <li>{t}</li>)
+      }
+    }
+  }</ul>
 
   def westList(xhtml: NodeSeq): NodeSeq = {
     Table.westList flatMap { t => bind( "tile", xhtml, "name" -> t) }
@@ -43,7 +60,8 @@ class TableSnippet{
     Table.northList flatMap { t => bind( "tile", xhtml, "name" -> t) }
   }
 
-  def eastTsumo(xhtml: NodeSeq): NodeSeq = Table.eastTsumo flatMap { t => bind( "tile", xhtml, "name" -> t) }
+  def eastTsumo (xhtml: NodeSeq): NodeSeq = Table.eastTsumo  flatMap { t => bind( "tile", xhtml, "name" -> t) }
+  def southTsumo(xhtml: NodeSeq): NodeSeq = Table.southTsumo flatMap { t => bind( "tile", xhtml, "name" -> t) }
 
   def startMarjong(html: NodeSeq) : NodeSeq = {
     bind("marjong", html,
@@ -78,7 +96,10 @@ class TableSnippet{
 //    </table>)
 //  }
   def releaseEast(s:String): JsCmd = {
-    JsCmds.SetHtml( "eastTehai", <ul>{Table.releaseEast(s) flatMap { t => <li>{t}</li>}}</ul>)
+    JsCmds.SetHtml( "eastTehai", {Table.releaseEast(s) flatMap { t => <li>{t}</li>}})
+  }
+  def releaseSouth(s:String): JsCmd = {
+    JsCmds.SetHtml( "southTehai", {Table.releaseSouth(s) flatMap { t => <li>{t}</li>}})
   }
 
 }

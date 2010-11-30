@@ -18,27 +18,27 @@
 
   <table>
     <tr class="table-header">
-      <th class="id">id:名前</th>
+      <th>東家</th>
+      <th>南家</th>
+      <th>西家</th>
+      <th>北家</th>
     </tr>
     <tr>
       <td>
-        <ul>
-          <li>東家</li>
-        </ul>
         <lift:TableSnippet.eastList>
-          <li><tile:name/></li>
+          <tile:name/>
         </lift:TableSnippet.eastList>
         <lift:TableSnippet.eastTsumo>
-          <li><tile:name/></li>
+          <tile:name/>
         </lift:TableSnippet.eastTsumo>
       </td>
       <td>
-        <ul>
-          <li>南家</li>
-          <lift:TableSnippet.southList>
-          <li><tile:name/></li>
-          </lift:TableSnippet.southList>
-        </ul>
+        <lift:TableSnippet.southList>
+          <tile:name/>
+        </lift:TableSnippet.southList>
+        <lift:TableSnippet.southTsumo>
+          <tile:name/>
+        </lift:TableSnippet.southTsumo>
       </td>
       <td>
         <ul>

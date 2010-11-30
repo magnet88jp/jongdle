@@ -6,9 +6,9 @@ import scala.util.Random
 import com.google.appengine.api.datastore._
 import com.google.appengine.api.datastore.Query.{FilterOperator, SortDirection }
 
-case class Table(
-  id:Option[Long],
-  name:String )
+//case class Table(
+//  id:Option[Long],
+//  name:String )
 
 object Table {
 
@@ -40,6 +40,7 @@ println("yama="+yamaList.toString)
     tsumo
   }
 
+  var tsumoban: Int = 0
 
   // 配牌時に、Houseクラスのtehaiをセット
   var eastHouse:  House = new House { setTehai( haipaiList ) }
@@ -57,12 +58,22 @@ println("yama="+yamaList.toString)
   def eastTsumo: List[String] = {
     val tsumo = tsumoPai
     eastHouse.addTsumo(tsumo)    
+    tsumoban += 1
+    tsumo
+  }
+  def southTsumo: List[String] = {
+    val tsumo = tsumoPai
+    southHouse.addTsumo(tsumo)    
+    tsumoban += 1
     tsumo
   }
 
   // 牌を切ったら、リリースして、新しい手牌を表示
   def releaseEast(s: String): List[String] = {
     eastHouse.releasePai(s)
+  } 
+  def releaseSouth(s: String): List[String] = {
+    southHouse.releasePai(s)
   } 
 
 }
