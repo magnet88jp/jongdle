@@ -20,35 +20,21 @@ import jp.mydns.magnet.model.Table
 class TableSnippet{
 
   def eastList(xhtml: NodeSeq): NodeSeq = <ul id="eastTehai">{
-    if(Table.tsumoban%4 == 0) {
-      Table.eastList flatMap { t => 
-        bind( "tile", xhtml,
-  // NG        "name" -> ajaxButton( Text(t), (t) => SetHtml("table-div",releaseEast(t)) )
-  //        "name" -> a( Text(t), SetHtml("table-div",getEast) )
-  //        "name" -> a( Text(t), SetHtml("table-div",releaseEast(t)) )
-  //        "name" -> {if(Table.tsumoban%4 == 0)}<li><button onclick={SHtml.ajaxCall(Str(t), releaseEast _)._2}>{t}</button></li>{else}<li>{t}</li>
-          "name" -> <li><button onclick={SHtml.ajaxCall(Str(t), releaseEast _)._2}>{t}</button></li>
-  // OK        "name" -> <span onclick={SHtml.ajaxCall(Str(t), releaseEast _)._2}>{t}</span>
-        )
-      }
-    } else {
-      Table.eastList flatMap { t => 
-        bind( "tile", xhtml, "name" -> <li>{t}</li>)
-      }
+    Table.eastList flatMap { t => 
+      bind( "tile", xhtml,
+// NG        "name" -> ajaxButton( Text(t), (t) => SetHtml("table-div",releaseEast(t)) )
+//        "name" -> a( Text(t), SetHtml("table-div",getEast) )
+//        "name" -> a( Text(t), SetHtml("table-div",releaseEast(t)) )
+//        "name" -> {if(Table.tsumoban%4 == 0)}<li><button onclick={SHtml.ajaxCall(Str(t), releaseEast _)._2}>{t}</button></li>{else}<li>{t}</li>
+        "name" -> <li><button onclick={SHtml.ajaxCall(Str(t), releaseEast _)._2}>{t}</button></li>
+// OK        "name" -> <span onclick={SHtml.ajaxCall(Str(t), releaseEast _)._2}>{t}</span>
+      )
     }
   }</ul>
 
   def southList(xhtml: NodeSeq): NodeSeq = <ul id="southTehai">{
-    if(Table.tsumoban%4 == 1) {
-      Table.southList flatMap { t => 
-        bind( "tile", xhtml,
-          "name" -> <li><button onclick={SHtml.ajaxCall(Str(t), releaseSouth _)._2}>{t}</button></li>
-        )
-      }
-    } else {
-      Table.southList flatMap { t => 
-        bind( "tile", xhtml, "name" -> <li>{t}</li>)
-      }
+    Table.southList flatMap { t => 
+      bind( "tile", xhtml, "name" -> <li>{t}</li>)
     }
   }</ul>
 
@@ -96,10 +82,18 @@ class TableSnippet{
 //    </table>)
 //  }
   def releaseEast(s:String): JsCmd = {
-    JsCmds.SetHtml( "eastTehai", {Table.releaseEast(s) flatMap { t => <li>{t}</li>}})
+    if(Table.tsumoban%4 == 0) {
+      JsCmds.SetHtml( "eastTehai", {Table.releaseEast(s) flatMap { t =>  <li><button onclick={SHtml.ajaxCall(Str(t), releaseEast _)._2}>{t}</button></li>}})
+    } else {
+      JsCmds.SetHtml( "eastTehai", {Table.releaseEast(s) flatMap { t => <li>{t}</li>}})
+    }
   }
   def releaseSouth(s:String): JsCmd = {
-    JsCmds.SetHtml( "southTehai", {Table.releaseSouth(s) flatMap { t => <li>{t}</li>}})
+    if(Table.tsumoban%4 == 1) {
+      JsCmds.SetHtml( "southTehai", {Table.releaseSouth(s) flatMap { t =>  <li><button onclick={SHtml.ajaxCall(Str(t), releaseSouth _)._2}>{t}</button></li>}})
+    } else {
+      JsCmds.SetHtml( "southTehai", {Table.releaseSouth(s) flatMap { t => <li>{t}</li>}})
+    }
   }
 
 }
